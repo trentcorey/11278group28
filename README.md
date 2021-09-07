@@ -2,5 +2,5 @@
 
 Member1: Trent Corey
 Member2: Ruo Chen
-Member3:
+Member3: Samantha Martinez
 Member4:
