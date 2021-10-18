@@ -5,6 +5,8 @@ def read_image(filepath, image_name, image_class):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     im_hei, im_wid, channels = image.shape
 
+    image_name_size = len(image_name)
+    image_name = image_name[:image_name_size - 4]
     # Convert the grayscale image to binary
     ret, binary = cv2.threshold(gray, 100, 255, cv2.THRESH_OTSU)
     inverted_binary = ~binary
@@ -22,10 +24,10 @@ def read_image(filepath, image_name, image_class):
         if (cv2.contourArea(c)) > 10000:
             cv2.rectangle(with_contours,(x,y), (x+w,y+h), (255,0,0), 5)
             
-            f = open("_annotations.txt", "a")
-            f.write(image_name + " " + str(image_class) + "," + str(x/im_wid) + "," + str(y/im_hei) + "," + str(w/im_wid) + "," + str(h/im_hei) + "\n")
+            f = open("images\\" + image_name + ".txt", "a")
+            f.write(str(image_class) + " " + str(x/im_wid) + " " + str(y/im_hei) + " " + str(w/im_wid) + " " + str(h/im_hei) + "\n")
             f.close()
             
-    cv2.imshow('Bounding Box', with_contours)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow('Bounding Box', with_contours)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()

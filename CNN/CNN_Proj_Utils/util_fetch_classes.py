@@ -1,4 +1,4 @@
-def testing_read():
+def get_classes():
     with open("Model_Info\_classes.txt", "r") as f:
         lines = f.readlines()
         lines = [line.rstrip() for line in lines]
