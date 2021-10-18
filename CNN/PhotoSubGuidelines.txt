@@ -1,4 +1,0 @@
-Want to contribute to the database? Please submit a photo according to the guidelines:
-    Object to be considered should visually contrast the background. See example image.
-    Object to be considered should be the only object in the image.
-    Object to be considered should take up most of the image.
