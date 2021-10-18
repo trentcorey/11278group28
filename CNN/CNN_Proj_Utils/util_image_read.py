@@ -22,7 +22,7 @@ def read_image(filepath):
         if (cv2.contourArea(c)) > 10000:
             cv2.rectangle(with_contours,(x,y), (x+w,y+h), (255,0,0), 5)
             
-            f = open("img_labels.txt", "a")
+            f = open("_annotations.txt", "a")
             f.write(str(x/im_wid) + " " + str(y/im_hei) + " " + str(w/im_wid) + " " + str(h/im_hei) + "\n")
             f.close()
             
