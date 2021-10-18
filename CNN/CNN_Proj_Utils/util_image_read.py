@@ -1,4 +1,4 @@
-def read_image(filepath):
+def read_image(filepath, image_name, image_class):
     import cv2
     # read image
     image = cv2.imread(filepath)
@@ -23,7 +23,7 @@ def read_image(filepath):
             cv2.rectangle(with_contours,(x,y), (x+w,y+h), (255,0,0), 5)
             
             f = open("_annotations.txt", "a")
-            f.write(str(x/im_wid) + " " + str(y/im_hei) + " " + str(w/im_wid) + " " + str(h/im_hei) + "\n")
+            f.write(image_name + " " + str(image_class) + "," + str(x/im_wid) + "," + str(y/im_hei) + "," + str(w/im_wid) + "," + str(h/im_hei) + "\n")
             f.close()
             
     cv2.imshow('Bounding Box', with_contours)
