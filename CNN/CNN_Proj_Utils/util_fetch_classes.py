@@ -1,6 +1,6 @@
 def get_classes():
     with open("Model_Info\_classes.txt", "r") as f:
-        lines = f.readlines()
-        lines = [line.rstrip() for line in lines]
+        object_classes = f.readlines()
+        object_classes = [object_classes.rstrip() for object_classes in object_classes]
 
-    return lines
+    return object_classes
