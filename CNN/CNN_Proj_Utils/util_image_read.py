@@ -23,9 +23,10 @@ def annotate_image(filepath, image_name, image_class):
         if (cv2.contourArea(c)) > 10000:
             cv2.rectangle(with_contours,(x,y), (x+w,y+h), (255,0,0), 5)
             annotation = str(image_class) + " " + str(x/im_wid) + " " + str(y/im_hei) + " " + str(w/im_wid) + " " + str(h/im_hei) + "\n"
-            
-    # cv2.imshow('Bounding Box', with_contours)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+
+    # Show image    
+    cv2.imshow('Bounding Box', with_contours)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
     return annotation
