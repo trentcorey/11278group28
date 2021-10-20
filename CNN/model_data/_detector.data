@@ -1,0 +1,5 @@
+classes=3
+train=model_data/train.txt
+valid=model_data/test.txt
+names=model_data/_custom.names
+backup=backup/

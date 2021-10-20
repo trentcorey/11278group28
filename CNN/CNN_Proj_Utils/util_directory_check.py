@@ -4,21 +4,21 @@ import os
 # If the directory does not exist, create it.
 def directory_check():
     # Does folder 'images' exist?
-    dir = ("images")
+    dir = ("model_data\\images")
     dir_exist = os.path.isdir(dir)
     if not dir_exist:
         os.makedirs(dir)
 
-    # Does folder 'test' exist?
-    dir = ("images\\test")
-    dir_exist = os.path.isdir(dir)
-    if not dir_exist:
-        os.makedirs(dir)
+    # # Does folder 'test' exist?
+    # dir = ("images\\test")
+    # dir_exist = os.path.isdir(dir)
+    # if not dir_exist:
+    #     os.makedirs(dir)
 
-    # Does folder 'train' exist?
-    dir = ("images\\train")
-    dir_exist = os.path.isdir(dir)
-    if not dir_exist:
-        os.makedirs(dir)
+    # # Does folder 'train' exist?
+    # dir = ("images\\train")
+    # dir_exist = os.path.isdir(dir)
+    # if not dir_exist:
+    #     os.makedirs(dir)
     
     

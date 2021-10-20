@@ -29,15 +29,21 @@ def process_image(filepath, label):
         rand_num = random.randint(0,100)
         # If random number is <= 20, move the image and annotation to test images.
         if (rand_num <= 20):
-            shutil.move(filepath, "images\\test\\" + image_name + ".jpg")
-            f = open("images\\test\\" + image_name + ".txt", "a")
+            shutil.move(filepath, "model_data\\images\\" + image_name + ".jpg")
+            f = open("model_data\\images\\" + image_name + ".txt", "a")
             f.write(annotation)
+            f.close()
+            f = open("model_data\\" + "test.txt", "a")
+            f.write("model_data\\images\\" + image_name + ".jpg")
             f.close()
         else:
         # Else, move the image and annotation to training images. 20/80 split.
-            shutil.move(filepath, "images\\train\\" + image_name + ".jpg")
-            f = open("images\\train\\" + image_name + ".txt", "a")
+            shutil.move(filepath, "model_data\\images\\" + image_name + ".jpg")
+            f = open("model_data\\images\\" + image_name + ".txt", "a")
             f.write(annotation)
+            f.close()
+            f = open("model_data\\" + "train.txt", "a")
+            f.write("model_data\\images\\" + image_name + ".jpg")
             f.close()
     else:
         # Otherwise, there was no image at the filepath.
