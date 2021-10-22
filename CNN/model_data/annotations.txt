@@ -1,2 +1,1 @@
 images\apple1.jpg 92,55,260,227,0
-images\apple1.jpg 92,55,260,227,0
