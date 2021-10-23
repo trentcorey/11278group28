@@ -6,15 +6,12 @@ This section has
 */
 
 import React, {Component} from 'react'
-import VerticalMenu from "../Components/VerticalMenu";
-
 
 class Resources extends Component{
     render(){
         return (
             <div>
-                {/* The Vertical Menu */}
-                <VerticalMenu /> 
+                <h1>Resources</h1>
             </div>
         )
     }

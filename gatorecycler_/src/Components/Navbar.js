@@ -1,70 +1,58 @@
 import React from "react";
-import {Box, Tab} from '@mui/material';
+import {Box, Tab, Tabs, Typography} from '@mui/material';
 import { Link } from "react-router-dom";
-import {TabContext, TabList} from '@mui/lab';
+import VerticalMenu from '../Components/VerticalMenu';
 
-function Navbar() {
-    // Value var for tabs
-    const[val,setVal] = React.useState('1');
+function TabPanel(props) {
+  const { children, value, index } = props;
 
-    //  Change Val var
-    const forChange = (event, newVal) =>{
-        setVal(newVal);
-    };
-
-    return (
-        <div>
-            <Box sx={{ width: '100%', typography: 'body1' }}>
-                <TabContext value={val}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={forChange} aria-label="Tab menu">
-                            <Tab 
-                                label="Home" 
-                                component={Link} to= "/"
-                                val="1" 
-                            />
-                        <Tab 
-                            label="Upload Image"
-                            component={Link} to="/upload-image" 
-                            val="2" 
-                        />
-                    </TabList>
-                    </Box>
-                </TabContext>
-            </Box>
-        </div>
-    );
+  return (
+    <div
+      id={`nav-bar-${index}`}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
 }
 
-export default Navbar
+function menu(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `nav-bar-${index}`,
+    };
+}
 
 
+export default function Navbar() {
+  const [val, setVal] = React.useState(0);
 
-// import React from 'react';
-// import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-// import AccountCircle from '@mui/icons-material/AccountCircle';
+  const forChange = (event, newVal) => {
+    setVal(newVal);
+  };
 
-// function Navbar() {
-//     return (
-//         <AppBar position="static">
-//         <Toolbar>
-//           <Typography 
-//             variant="h3" 
-//             component="div" 
-//             align = "center" 
-//             sx={{ flexGrow: 1 }}>
-//               Gatorecycler
-//           </Typography>
-//           <Button variant = "contained">Sign-In</Button>
-//           {/* Need to move it over from the Account circle */}
-//           {(
-//             <div>
-//               <AccountCircle />
-//             </div>
-//           )}
-//         </Toolbar>
-//       </AppBar>
-//     );
-// }
+  return (
+    <Box sx={{ width: '100%', typography: 'body1' }}>
 
-// export default Navbar;
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs 
+          value={val} 
+          onChange={forChange} 
+          aria-label="Navbar" >
+            <Tab label="Home" {...menu(0)} containerElement={<Link to="/"/>} />
+            <Tab label="Upload Images" {...menu(1)} containerElement={<Link to="/upload"/>}/>
+        </Tabs>
+      </Box>
+
+      <TabPanel value={val} index={0} >
+        <VerticalMenu />
+      </TabPanel>
+      <TabPanel value={val} index={1}>
+        Item Two
+      </TabPanel>
+    </Box>
+  );
+}
