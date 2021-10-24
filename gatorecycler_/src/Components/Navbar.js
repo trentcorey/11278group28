@@ -2,6 +2,7 @@ import React from "react";
 import {Box, Tab, Tabs, Typography} from '@mui/material';
 import { Link } from "react-router-dom";
 import VerticalMenu from '../Components/VerticalMenu';
+import UploadItem from "../Pages/UploadItem";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -42,8 +43,8 @@ export default function Navbar() {
           value={val} 
           onChange={forChange} 
           aria-label="Navbar" >
-            <Tab label="Home" {...menu(0)} containerElement={<Link to="/"/>} />
-            <Tab label="Upload Images" {...menu(1)} containerElement={<Link to="/upload"/>}/>
+            <Tab label="Home" {...menu(0)} to='/' component={Link} />
+            <Tab label="Upload Images" {...menu(1)} to='/upload' component={Link}/>
         </Tabs>
       </Box>
 
@@ -51,7 +52,7 @@ export default function Navbar() {
         <VerticalMenu />
       </TabPanel>
       <TabPanel value={val} index={1}>
-        Item Two
+        <UploadItem/>
       </TabPanel>
     </Box>
   );

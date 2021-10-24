@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import VerticalMenu from "../Components/VerticalMenu";
 // import About from "./About";
 
 class Home extends Component{

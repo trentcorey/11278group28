@@ -1,7 +1,9 @@
 import React from 'react'
 import {Box, Tab, Tabs, Typography} from '@mui/material';
 import { Link } from "react-router-dom";
-
+import About from '../Pages/About';
+import Resources from '../Pages/Resources';
+import Help from '../Pages/Help';
 
 function TabPanel(props) {
     const { children, value, index } = props;
@@ -21,7 +23,7 @@ function TabPanel(props) {
   
   function menu(index) {
       return {
-        id: `simple-tab-${index}`,
+        id: `menu-${index}`,
         'aria-controls': `nav-bar-${index}`,
       };
   }
@@ -44,19 +46,19 @@ function VerticalMenu() {
           aria-label="Sub-navbar in home"
           sx={{ borderRight: 1, borderColor: 'divider' }}
         >
-          <Tab label="About" {...menu(0)} containerElement={<Link to="/about"/>} />
-          <Tab label="Resources" {...menu(1)} containerElement={<Link to="/resources"/>} />
-          <Tab label="Help Section" {...menu(2)} containerElement={<Link to="/help"/>} />
+          <Tab label="About" {...menu(0)} to='/about' component={Link}  />
+          <Tab label="Resources" {...menu(1)} to='/resources' component={Link} />
+          <Tab label="Help Section" {...menu(2)} to='/help' component={Link} />
         </Tabs>
         
         <TabPanel value={value} index={0}>
-          Item One
+          <About/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <Resources/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <Help/>
         </TabPanel>
       </Box>
     );

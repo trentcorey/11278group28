@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar, Button, Toolbar, Typography} from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Link } from "react-router-dom";
 
 function Titlebar() {
     return (
@@ -13,7 +14,9 @@ function Titlebar() {
             sx={{ flexGrow: 1 }}>
               Gatorecycler
           </Typography>
-          <Button variant = "contained">Sign-In</Button>
+          <Button variant = "contained" to='/sign-in' component={Link}>
+            Sign-In
+          </Button>
           {/* Need to move it over from the Account circle */}
           {(
             <div>
