@@ -33,8 +33,8 @@ jobs:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
             sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u root -pGatorecycle giraffe < sql-data/images.sql
-            mysql -h 127.0.0.1 -u root -pGatorecycle --execute="SELECT * FROM giraffe.images"
+            mysql -h localhost -u root -pGatorecycle giraffe < sql-data/images.sql
+            mysql -h localhost -u root -pGatorecycle --execute="SELECT * FROM giraffe.images"
 workflows:
   version: 2
   build-deploy:
