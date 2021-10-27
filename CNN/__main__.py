@@ -1,4 +1,3 @@
-from cnn_proj_utils import util_directory_check
 from cnn_proj_utils import util_process_image
 import os
 
