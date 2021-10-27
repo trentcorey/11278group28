@@ -2,6 +2,7 @@ import 'react-image-crop/dist/ReactCrop.css';
 import React, {Component} from 'react';
 import Cropper from './components/cropper'
 import DisplayTable from './components/displaytable'
+import UploadFile from './components/uploadFile'
 
 class App extends Component {
   state = {data: null};
@@ -34,6 +35,7 @@ class App extends Component {
           
           <Cropper />
           <DisplayTable />
+          <UploadFile />
           
         </div>
     );
