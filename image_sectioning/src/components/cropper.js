@@ -11,41 +11,24 @@ const Cropper = () => {
 
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState(null);
-    
-    function saveSection(table, class_menu) {
-        var tableRef = document.getElementById(table);
-        var newRow   = tableRef.insertRow(-1);
+    var testObject = [];
+    var numSections = 0;
+    function saveSection(class_menu) {
+        var class_id = (document.getElementById(class_menu)).value;
+        
+        var testString = {'SectionID': numSections, 'x_min': crop.x, 'y_min': crop.y, 
+                        'x_max': crop.x + crop.width, 'y_max': crop.y + crop.height, 'class_id': parseInt(class_id)}
+        numSections = numSections + 1;
+        testObject.push(testString);
+        
 
-        var menuRef = document.getElementById(class_menu);
-    
-        var newCell  = newRow.insertCell(0);
-        var newElem = document.createElement( 'input' );
-        newCell.innerHTML = crop.x;
+        // Put the object into storage
+        localStorage.setItem('testObject', JSON.stringify(testObject));
 
-        newCell  = newRow.insertCell(1);
-        newElem = document.createElement( 'input' );
-        newCell.innerHTML = crop.y;
+        // Retrieve the object from storage
+        var retrievedObject = localStorage.getItem('testObject');
 
-        newCell  = newRow.insertCell(2);
-        newElem = document.createElement( 'input' );
-        newCell.innerHTML = crop.x + crop.width;
-
-        newCell  = newRow.insertCell(3);
-        newElem = document.createElement( 'input' );
-        newCell.innerHTML = crop.y + crop.height;
-
-        newCell  = newRow.insertCell(4);
-        newElem = document.createElement( 'input' );
-        newCell.innerHTML = menuRef.value;
-
-        newCell = newRow.insertCell(5);
-        newElem = document.createElement( 'input' );
-        newElem.setAttribute("type", "button");
-        newElem.setAttribute("value", "Delete Row");
-        newElem.setAttribute("onclick", 'SomeDeleteRowFunction(this)')
-        newCell.appendChild(newElem);
-
-        console.log("Hi!")
+        console.log('retrievedObject: ', JSON.parse(retrievedObject));
     }
     
     window.SomeDeleteRowFunction = function SomeDeleteRowFunction(o) {
@@ -65,7 +48,7 @@ const Cropper = () => {
                     </div>}
                 </div>
 
-                <label for="classification">What's in the section?</label>
+                <label htmlFor="classification">What's in the section?</label>
                 <select name ="classification" id="classification">
                     <option value="0">Red Apple</option>
                     <option value="1">Green Apple</option>
@@ -75,17 +58,8 @@ const Cropper = () => {
                     <option value="5">Green Grape</option>
                     <option value="6">Banana</option>
                 </select>
-                <button className='save_Section' onClick={() => {saveSection('position_table', 'classification')}}>Save Section</button>
+                <button className='save_Section' onClick={() => {saveSection('classification')}}>Save Section</button>
 
-                <table id="position_table">
-                    <tr>
-                    <td>x_min</td>
-                    <td>y_min</td>
-                    <td>x_max</td>
-                    <td>y_min</td>
-                    <td type='select'>class_id</td>
-                    </tr>
-                </table>
                 <button className='save_Section'>Upload File</button>
             </div>
         )
