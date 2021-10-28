@@ -1,17 +1,16 @@
 import React, {Component} from 'react'
+import { JsonToTable } from "react-json-to-table";
 
 class DisplayTable extends Component {
 
-    render() {
-        return (  
-            <div className="displayTable">
-
-            </div>
-        )
-    }
-        
-
-    
+  render() {
+    var preExistingData = JSON.parse(sessionStorage.getItem('sectionInfo'))
+    return (
+      <div>
+        <JsonToTable json = {preExistingData} />
+      </div>
+    )
+  }
 }
     
 export default DisplayTable

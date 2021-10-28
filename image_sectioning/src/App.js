@@ -1,5 +1,6 @@
 import 'react-image-crop/dist/ReactCrop.css';
 import React, {Component} from 'react';
+// import SectionOff from './components/sectionOff'
 import Cropper from './components/cropper'
 import DisplayTable from './components/displaytable'
 import UploadFile from './components/uploadFile'
@@ -24,17 +25,19 @@ class App extends Component {
   };
 
   render() {
+
+    window.onload = function() {
+
+      sessionStorage.clear();
+
+    }
     return (
       
         <div className='App'>
-          
-          <header className='Header'>
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
           <p className="Intro">{this.state.data}</p>
           
+          {/* <SectionOff /> */}
           <Cropper />
-          <DisplayTable />
           <UploadFile />
           
         </div>

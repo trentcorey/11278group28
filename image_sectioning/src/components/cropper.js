@@ -1,30 +1,44 @@
 import ReactCrop from 'react-image-crop';
 import React, { useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
+import DisplayTable from './displaytable';
 
 const Cropper = () => {
     const [src, selectFile] = useState(null);
-  
-    const handleFileChange = e => {
-        selectFile(URL.createObjectURL(e.target.files[0]))
-    }
-
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState(null);
+    const [infoDisplayed, setInfoDisplayed] = useState(0);
 
-    var testObject = [];
-    var numSections = 0;
+
+    const handleFileChange = e => {
+        selectFile(URL.createObjectURL(e.target.files[0]))
+
+        var clearData = [];
+        sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
+    };
+
+ 
+
     function saveSection(class_menu) {
-
         var class_id = parseInt((document.getElementById(class_menu)).value);
         
-        var testString = {'SectionID': numSections, 'x_min': crop.x, 'y_min': crop.y, 
+        var sectionData = {'SectionID': 0, 'x_min': crop.x, 'y_min': crop.y, 
                         'x_max': crop.x + crop.width, 'y_max': crop.y + crop.height, 'class_id': class_id}
-        numSections = numSections + 1;
-        testObject.push(testString);
+
+        var preExistingData = JSON.parse(sessionStorage.getItem('sectionInfo'))
+        if (preExistingData == null) {
+            preExistingData = [];
+        }
+
+        // Also doubles as a counter. Two birds with one stone!
+        sectionData.SectionID = infoDisplayed;
+        preExistingData.push(sectionData);
         
         // Put the object into storage
-        localStorage.setItem('sectionInfo', JSON.stringify(testObject));
+        sessionStorage.setItem('sectionInfo', JSON.stringify(preExistingData));
+
+        // Force the table to update
+        setInfoDisplayed(1 + infoDisplayed)
     }
     
     return (
@@ -36,21 +50,26 @@ const Cropper = () => {
                 
                 {src && <div className='col-6'>
                     <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} />
+                    
                 </div>}
             </div>
-
-            <label htmlFor="classification">What's in the section?</label>
-            <select name ="classification" id="classification">
-                <option value="0">Red Apple</option>
-                <option value="1">Green Apple</option>
-                <option value="2">Pear</option>
-                <option value="3">Orange</option>
-                <option value="4">Red Grape</option>
-                <option value="5">Green Grape</option>
-                <option value="6">Banana</option>
-            </select>
-            <button className='save_Section' onClick={() => {saveSection('classification')}}>Save Section</button>
+            {src && <div> 
+                <label htmlFor="classification">What's in the section?</label>
+                <select name ="classification" id="classification">
+                    <option value="0">Red Apple</option>
+                    <option value="1">Green Apple</option>
+                    <option value="2">Pear</option>
+                    <option value="3">Orange</option>
+                    <option value="4">Red Grape</option>
+                    <option value="5">Green Grape</option>
+                    <option value="6">Banana</option>
+                </select>
+                </div>}
+            
+            {src && <button className='save_Section' onClick={() => {saveSection('classification')}}>Save Section</button>}
+            {src && <DisplayTable />}
         </div>
+
     )
 };
 
