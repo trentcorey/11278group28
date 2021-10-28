@@ -1,37 +1,26 @@
 import React, {Component} from "react";
-import {InputLabel, Button } from "@mui/material";
+import {Button, Paper } from "@mui/material";
+import UploadButton from "../Components/UploadButton";
+
 class UploadItems extends Component{
     render(){
         return(
             <div>
-                <h2>File Upload</h2>
+                <Paper 
+                    //variant = "outlined"
+                    elevation = {8}
+                >
+                    <h2>File Upload</h2>
 
-                {/* Make it a component,
-                    Also, see if you can make the file name come out in selected.
-                */}
-                <input
-                    accept="image/*"
-                    // className={classes.input}
-                    style={{ display: 'none' }}
-                    id="raised-button-file"
-                    multiple
-                    type="file"
-                />
-                <InputLabel htmlFor="raised-button-file">
+                    <UploadButton />
+
                     <Button variant="raised" component="span">
-                        Upload
+                        Cancel
                     </Button>
-                </InputLabel> 
-
-                <h5>Selected Files: </h5>
-
-                <Button variant="raised" component="span">
-                    Cancel
-                </Button>
-
-                <Button variant="raised" component="span">
-                    Submit
-                </Button>
+                    <Button variant="raised" component="span">
+                        Submit
+                    </Button>
+                </Paper>
             </div>
         )
     }

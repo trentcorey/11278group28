@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {Box, Tab, Tabs, Typography} from '@mui/material';
 import { Link } from "react-router-dom";
 import About from '../Pages/About';
