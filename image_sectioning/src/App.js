@@ -2,7 +2,6 @@ import 'react-image-crop/dist/ReactCrop.css';
 import React, {Component} from 'react';
 // import SectionOff from './components/sectionOff'
 import Cropper from './components/cropper'
-import DisplayTable from './components/displaytable'
 import UploadFile from './components/uploadFile'
 
 class App extends Component {

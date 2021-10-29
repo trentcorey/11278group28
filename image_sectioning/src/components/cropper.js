@@ -3,22 +3,21 @@ import React, { useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import DisplayTable from './displaytable';
 
+
 const Cropper = () => {
     const [src, selectFile] = useState(null);
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState(null);
     const [infoDisplayed, setInfoDisplayed] = useState(0);
-
+    
 
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]))
-
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
         setInfoDisplayed(0);
+        console.log(image);
     };
-
- 
 
     function saveSection(class_menu) {
         var class_id = parseInt((document.getElementById(class_menu)).value);
@@ -31,27 +30,28 @@ const Cropper = () => {
             preExistingData = [];
         }
 
-        // Also doubles as a counter. Two birds with one stone!
-        sectionData.SectionID = infoDisplayed;
+        // Also doubles as a counter. Two birds with one stone! - Ruo
+        sectionData.SectionID = preExistingData.length;
         preExistingData.push(sectionData);
         
-        // Put the object into storage
+        // Put the object into storage - Ruo
         sessionStorage.setItem('sectionInfo', JSON.stringify(preExistingData));
 
-        // Force the table to update
-        setInfoDisplayed(1 + infoDisplayed)
+        // Force the table to update - Ruo
+            // I could have easily updated this with preExistingData.length, but it keeps giving me warnings,
+            // and I don't like warnings - Ruo
+        setInfoDisplayed(infoDisplayed + 1)
     }
     
     return (
         <div className='container'>
             <div className='row'>
                 <div className='col-6'>
-                    <input type='file' accept='image/*' onChange={handleFileChange} />
+                    <input type='file' accept='image/jpeg' onChange={handleFileChange} />
                 </div>
                 
                 {src && <div className='col-6'>
                     <ReactCrop src={src} onImageLoaded={setImage} crop={crop} onChange={setCrop} />
-                    
                 </div>}
             </div>
             {src && <div> 
