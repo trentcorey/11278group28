@@ -15,6 +15,7 @@ const Cropper = () => {
 
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
+        setInfoDisplayed(0);
     };
 
  
