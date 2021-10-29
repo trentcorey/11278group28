@@ -3,18 +3,21 @@ import React, { useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import DisplayTable from './displaytable';
 
-
 const Cropper = () => {
+    // These are states. Functionality was discovered using the module homepage at:
+    // https://www.npmjs.com/package/react-image-crop
     const [src, selectFile] = useState(null);
     const [image, setImage] = useState(null)
     const [crop, setCrop] = useState(null);
     const [infoDisplayed, setInfoDisplayed] = useState(0);
     
-
+    // This is called to handle a file load when it occurs.
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]))
+        // Clears section information.
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
+        // Force an re-render.
         setInfoDisplayed(0);
         console.log(image);
     };

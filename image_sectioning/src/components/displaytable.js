@@ -70,6 +70,4 @@ const RenderRow = (props) => {
   })
 }
 
-
-
 export default DisplayTable
