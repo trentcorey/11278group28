@@ -17,6 +17,7 @@ const Cropper = () => {
         // Clears section information.
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
+        sessionStorage.setItem('image', JSON.stringify(e.target.files[0]));
         // Force an re-render.
         setInfoDisplayed(0);
         console.log(image);

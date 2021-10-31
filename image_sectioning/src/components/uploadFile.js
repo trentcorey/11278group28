@@ -7,9 +7,20 @@ import React, {Component} from 'react'
 
 class UploadFile extends Component {
 
-    handleFileUpload = async () => {
+
+    handleFileUpload = () => {
         var sectionData = JSON.parse(sessionStorage.getItem('sectionInfo'));
-        const response = postMessage('/send_data', sectionData);
+        console.log(sectionData);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(sectionData)
+        };
+
+        var response = fetch('/send_data', requestOptions)
+            .then(response => response.json())
+
         console.log(response)
     }
     render() {
