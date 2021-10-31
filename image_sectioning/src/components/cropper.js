@@ -2,22 +2,27 @@ import ReactCrop from 'react-image-crop';
 import React, { useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import DisplayTable from './displaytable';
+import UploadFile from './uploadFile';
+import axios from 'axios';
 
 const Cropper = () => {
     // These are states. Functionality was discovered using the module homepage at:
     // https://www.npmjs.com/package/react-image-crop
     const [src, selectFile] = useState(null);
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     const [crop, setCrop] = useState(null);
     const [infoDisplayed, setInfoDisplayed] = useState(0);
     
     // This is called to handle a file load when it occurs.
     const handleFileChange = e => {
         selectFile(URL.createObjectURL(e.target.files[0]))
+        setSelectedImage(e.target.files[0]);
+
         // Clears section information.
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
-        sessionStorage.setItem('image', JSON.stringify(e.target.files[0]));
+
         // Force an re-render.
         setInfoDisplayed(0);
         console.log(image);
@@ -34,16 +39,16 @@ const Cropper = () => {
             preExistingData = [];
         }
 
-        // Also doubles as a counter. Two birds with one stone! - Ruo
+        // Also doubles as a counter. Two birds with one stone!
         sectionData.SectionID = preExistingData.length;
         preExistingData.push(sectionData);
         
-        // Put the object into storage - Ruo
+        // Put the object into storage
         sessionStorage.setItem('sectionInfo', JSON.stringify(preExistingData));
 
-        // Force the table to update - Ruo
+        // Force the table to update
             // I could have easily updated this with preExistingData.length, but it keeps giving me warnings,
-            // and I don't like warnings - Ruo
+            // and I don't like warnings
         setInfoDisplayed(infoDisplayed + 1)
     }
     
@@ -73,6 +78,7 @@ const Cropper = () => {
             
             {src && <button className='save_Section' onClick={() => {saveSection('classification')}}>Save Section</button>}
             {src && <DisplayTable />}
+            {src && <UploadFile image={selectedImage}/>}
         </div>
 
     )

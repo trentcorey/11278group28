@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import axios from 'axios';
 
 // Process should go like this: uploadFile is pressed, image and its attached JSON file
 // is sent to backend. (Image as a BLOB?)
@@ -6,11 +7,22 @@ import React, {Component} from 'react'
 // Then, message saying "upload successful!" if it worked.
 
 class UploadFile extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {image: this.props.image}
+    }
 
     handleFileUpload = () => {
         var sectionData = JSON.parse(sessionStorage.getItem('sectionInfo'));
-        console.log(sectionData);
+
+        const data = new FormData()
+        data.append('file', this.state.image)
+        axios.post("/upload", data, {
+
+        })
+        .then (res => {
+            console.log(res.statusText)
+        })
 
         const requestOptions = {
             method: 'POST',
@@ -23,6 +35,7 @@ class UploadFile extends Component {
 
         console.log(response)
     }
+
     render() {
         return (
             <div className="displayTable">

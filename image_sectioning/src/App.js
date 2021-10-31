@@ -1,7 +1,6 @@
 import 'react-image-crop/dist/ReactCrop.css';
 import React, {Component} from 'react';
 import Cropper from './components/cropper'
-import UploadFile from './components/uploadFile'
 
 /*****************************************************SOME NOTES******************************************************/
 // Some clarification: React works on "renders". A component is loaded, and does not change unless its state changes.
@@ -26,23 +25,6 @@ import UploadFile from './components/uploadFile'
 /***************************************************END OF NOTES******************************************************/
 
 class App extends Component {
-  state = {data: null};
-
-  componentDidMount() {
-    this.callBackendAPI()
-      .then(res => this.setState({data: res.express}))
-      .catch(err => console.log(err));
-  }
-
-  callBackendAPI = async () => {
-    const response = await fetch('/express_backend');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message)
-    }
-    return body;
-  };
 
   render() {
     // Clear session storage when page is reloaded.
@@ -53,9 +35,7 @@ class App extends Component {
     // Displays necessary information and components.
     return (
         <div className='App'>
-          <p className="Intro">{this.state.data}</p>
-          <Cropper />
-          <UploadFile />     
+          <Cropper />  
         </div>
     );
   }
