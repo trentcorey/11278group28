@@ -1,4 +1,4 @@
-import React, {Component, useState} from "react";
+import React, {Component} from "react";
 import {InputLabel, Button } from '@mui/material';
 
 class UploadButton extends Component {

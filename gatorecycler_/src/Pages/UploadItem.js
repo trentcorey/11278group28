@@ -8,7 +8,7 @@ class UploadItems extends Component{
             <div>
                 <Paper 
                     //variant = "outlined"
-                    elevation = {8}
+                    elevation = {2}
                 >
                     <h2>File Upload</h2>
 
