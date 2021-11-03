@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
-const multer = require('multer');
+const multer = require('multer');   
+const {spawn} = require('child_process');
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -11,7 +12,14 @@ app.use(express.json());
 app.listen(port, () => console.log('Listening on port ' + port));
 
 app.get('/express_backend', (req, res) => {
-    res.send({express: 'Your express backend is connected to React'});
+    var dataToSend;
+    const python = spawn('python', ['test.py']);
+    python.stdout.on('data', function(data) {
+        dataToSend = data.toString();
+    });
+    python.on('close', (code) => {
+        res.send(dataToSend); 
+    });
 });
 
 app.post('/send_data', (req, res) => {
