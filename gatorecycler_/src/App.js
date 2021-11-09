@@ -5,9 +5,6 @@ import Titlebar from './Components/Titlebar';
 import Home from './Pages/Home';
 import UploadItems from './Pages/UploadItem';
 import {HashRouter as Router, Route} from 'react-router-dom';
-// import About from './Pages/About';
-// import Resources from './Pages/Resources';
-// import Help from './Pages/Help';
 import SignIn from './Pages/SignIn';
 
 

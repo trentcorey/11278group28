@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Button, Paper } from "@mui/material";
-import UploadButton from "../Components/UploadButton";
+import {Paper } from "@mui/material";
+import Cropper from "../Components/Cropper";
 
 class UploadItems extends Component{
     render(){
@@ -12,14 +12,16 @@ class UploadItems extends Component{
                 >
                     <h2>File Upload</h2>
 
-                    <UploadButton />
-
-                    <Button variant="raised" component="span">
+                    <Cropper />
+                    {/* <UploadButton />
+                    <DisplayTable />
+                    <Button variant="outlined" color = "warning">
                         Cancel
                     </Button>
-                    <Button variant="raised" component="span">
+                   
+                    <Button variant="outlined" color = "primary">
                         Submit
-                    </Button>
+                    </Button> */}
                 </Paper>
             </div>
         )
