@@ -10,7 +10,8 @@ import axios from 'axios';
 class UploadFile extends Component {
     constructor(props) {
         super(props);
-        this.state = {image: this.props.image}
+        this.state = {image: this.props.image,
+                      image_result: null}
     }
 
     handleFileUpload = () => {
