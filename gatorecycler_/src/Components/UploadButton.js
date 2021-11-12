@@ -25,17 +25,6 @@ class UploadFile extends Component {
         .then (res => {
             console.log(res.statusText)
         })
-
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(sectionData)
-        };
-
-        var response = fetch('/send_data', requestOptions)
-            .then(response => response.json())
-
-        console.log(response)
     }
 
     render() {
@@ -49,6 +38,8 @@ class UploadFile extends Component {
                 }>
                     Upload File
                 </Button>
+                
+                <img id='DetectResult' src="http://localhost:5000/uploads/result.jpg"/>
             </div>
         )
     } 
