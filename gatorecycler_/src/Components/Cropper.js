@@ -23,10 +23,16 @@ const Cropper = () => {
         // Clears section information.
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
+        axios.delete("/delete_result", {
 
+        })
+        .then (res => {
+            console.log(res.data)
+            setInfoDisplayed(infoDisplayed + 1);
+        })
         // Force an re-render.
         setInfoDisplayed(infoDisplayed + 1);
-        console.log(selectedImage);
+        console.log(image);
     };
 
     const handleFileUpload = () => {
@@ -111,6 +117,8 @@ const Cropper = () => {
                 Upload File
                 </Button>
             }
+
+            {src && <img id='DetectResult' src="http://localhost:5000/uploads/result.jpg" alt="Not found"/> }
         </div>
 
     )

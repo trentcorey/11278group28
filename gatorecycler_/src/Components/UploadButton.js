@@ -15,9 +15,7 @@ class UploadFile extends Component {
                       num_counter: 0}
     }
 
-    handleFileUpload = () => {
-        var sectionData = JSON.parse(sessionStorage.getItem('sectionInfo'));
-        
+    handleFileUpload = () => {        
         const data = new FormData()
         data.append('file', this.state.image)
         axios.post("/upload", data, {
