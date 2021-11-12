@@ -33,6 +33,7 @@ const Cropper = () => {
         // Force an re-render.
         setInfoDisplayed(infoDisplayed + 1);
         console.log(image);
+        console.log(src);
     };
 
     const handleFileUpload = () => {
@@ -118,7 +119,7 @@ const Cropper = () => {
                 </Button>
             }
 
-            {src && <img id='DetectResult' src="http://localhost:5000/uploads/result.jpg" alt="Not found"/> }
+            {src && <img id='DetectResult' src="http://localhost:5000/uploads/result.jpg" key={src} alt="Not found"/> }
         </div>
 
     )
