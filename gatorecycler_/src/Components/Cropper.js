@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import { Button } from '@mui/material';
 import DisplayTable from './DisplayTable';
-import UploadButton from './UploadButton';
+import axios from 'axios';
 // import axios from 'axios';
 
 const Cropper = () => {
@@ -26,8 +26,19 @@ const Cropper = () => {
 
         // Force an re-render.
         setInfoDisplayed(infoDisplayed + 1);
-        console.log(image);
+        console.log(selectedImage);
     };
+
+    const handleFileUpload = () => {
+        const data = new FormData()
+        data.append('file', selectedImage)
+        axios.post("/upload", data, {
+
+        })
+        .then (res => {
+            console.log(res.statusText)
+        })
+    }
 
     function saveSection(class_menu) {
         var class_id = parseInt((document.getElementById(class_menu)).value);
@@ -90,7 +101,16 @@ const Cropper = () => {
             {src && <DisplayTable />}
             <br/>
             
-            {src && <UploadButton image={selectedImage}/>}
+            {src &&
+                <Button
+                    className='upload_Button'
+                    variant = "outlined"
+                    color = "primary"
+                    size = "small"
+                    onClick={() => {handleFileUpload()}}>
+                Upload File
+                </Button>
+            }
         </div>
 
     )
