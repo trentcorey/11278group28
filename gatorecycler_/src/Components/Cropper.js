@@ -25,7 +25,7 @@ const Cropper = () => {
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));
 
         // Force an re-render.
-        setInfoDisplayed(0);
+        setInfoDisplayed(infoDisplayed + 1);
         console.log(image);
     };
 

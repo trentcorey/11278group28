@@ -11,12 +11,13 @@ class UploadFile extends Component {
     constructor(props) {
         super(props);
         this.state = {image: this.props.image,
-                      image_result: null}
+                      image_result: null,
+                      num_counter: 0}
     }
 
     handleFileUpload = () => {
         var sectionData = JSON.parse(sessionStorage.getItem('sectionInfo'));
-
+        
         const data = new FormData()
         data.append('file', this.state.image)
         axios.post("/upload", data, {
@@ -25,7 +26,7 @@ class UploadFile extends Component {
         .then (res => {
             console.log(res.statusText)
         })
-    }
+    };
 
     render() {
         return (
@@ -46,35 +47,3 @@ class UploadFile extends Component {
 }
 
 export default UploadFile
-
-// import React, {Component} from "react";
-// import {InputLabel, Button } from '@mui/material';
-
-// class UploadButton extends Component {
-
-//     render(){
-//         return (
-//             <div>
-//                 <input
-//                         accept="image/*"
-//                         // className={classes.input}
-//                         style={{ display: 'none' }}
-//                         id="upload-button"
-//                         multiple
-//                         type="file"
-//                         onChange={this.handleFileSelect}
-//                     />
-//                     <InputLabel htmlFor="upload-button">
-//                         <Button variant="outlined" color = "inherit">
-//                             Upload
-//                         </Button>
-//                     </InputLabel> 
-
-//                     <h5>Selected Files: </h5>
-//                     {/* <p>{handleFileSelect.name}</p> */}
-//             </div>
-//         )
-//     }
-// }
-
-// export default UploadButton

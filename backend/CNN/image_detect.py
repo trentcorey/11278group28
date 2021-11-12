@@ -173,9 +173,9 @@ if __name__=="__main__":
     print("In python: " + image)
     r_image, ObjectsList = yolo.detect_img(image)
     #print(ObjectsList)
-    cv2.imshow(image, r_image)
+    #cv2.imshow(image, r_image)
     cv2.imwrite("uploads/result.jpg", r_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
 
     yolo.close_session()

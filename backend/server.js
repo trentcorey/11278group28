@@ -48,12 +48,8 @@ app.post('/upload', upload.single('file'), function(req, res) {
     console.log(req.file.path)
 
     const python = spawn('python', ['CNN/image_detect.py', req.file.path]);
-    python.stdout.on('data', function(data) {
-        dataToSend = data.toString();
-    });
     python.on('close', (code) => {
         console.log('Finished detection')
-        console.log(dataToSend)
-        res.send(dataToSend); 
+        res.send("Detection finished"); 
     });
 });
