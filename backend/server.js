@@ -38,15 +38,16 @@ app.post('/upload', upload.single('file'), function(req, res) {
     const python = spawn('python', ['CNN/image_detect.py', req.file.path]);
     python.on('close', (code) => {
         console.log('Finished detection')
-        res.send("Detection finished"); 
+        res.sendFile(__dirname + "/uploads/result.jpg")
     });
 });
 
 app.delete('/delete_result', function(req, res) {
     console.log("Deleting result")
     const python = spawn('python', ['python_helpers/delete_result.py']);
+
     python.on('close', (code) => {
         console.log('Result deleted')
-        res.send("Deleted result")
+        res.send("Deleted ")
     });
 });

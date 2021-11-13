@@ -170,7 +170,6 @@ class YOLO(object):
 if __name__=="__main__":
     yolo = YOLO()
     image = sys.argv[1]
-    print("In python: " + image)
     r_image, ObjectsList = yolo.detect_img(image)
     #print(ObjectsList)
     #cv2.imshow(image, r_image)

@@ -1,5 +1,5 @@
 import ReactCrop from 'react-image-crop';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import { Button } from '@mui/material';
 import DisplayTable from './DisplayTable';
@@ -14,6 +14,7 @@ const Cropper = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [crop, setCrop] = useState(null);
     const [infoDisplayed, setInfoDisplayed] = useState(0);
+    const [responseImage, setResponse] = useState(0);
     
     // This is called to handle a file load when it occurs.
     const handleFileChange = e => {
@@ -32,6 +33,7 @@ const Cropper = () => {
         })
         // Force an re-render.
         setInfoDisplayed(infoDisplayed + 1);
+        setResponse(null);
         console.log(image);
         console.log(src);
     };
@@ -40,12 +42,15 @@ const Cropper = () => {
         const data = new FormData()
         data.append('file', selectedImage)
         axios.post("/upload", data, {
-
+            responseType: 'blob'
         })
         .then (res => {
-            console.log(res.statusText)
+            console.log(res.data)
+            setResponse(URL.createObjectURL(new Blob([res.data])))
         })
+
     }
+
 
     function saveSection(class_menu) {
         var class_id = parseInt((document.getElementById(class_menu)).value);
@@ -119,7 +124,7 @@ const Cropper = () => {
                 </Button>
             }
 
-            {src && <img id='DetectResult' src="http://localhost:5000/uploads/result.jpg" key={src} alt="Not found"/> }
+            {src && <img id='DetectResult' src={responseImage} key={src} alt="Not found"/> }
         </div>
 
     )
