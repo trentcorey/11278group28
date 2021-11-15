@@ -13,15 +13,6 @@ class UploadItems extends Component{
                     <h2>File Upload</h2>
 
                     <Cropper />
-                    {/* <UploadButton />
-                    <DisplayTable />
-                    <Button variant="outlined" color = "warning">
-                        Cancel
-                    </Button>
-                   
-                    <Button variant="outlined" color = "primary">
-                        Submit
-                    </Button> */}
                 </Paper>
             </div>
         )

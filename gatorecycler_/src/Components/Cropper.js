@@ -40,17 +40,41 @@ const Cropper = () => {
 
     const handleFileUpload = () => {
         const data = new FormData()
+
+        var image_ID = -1;
         data.append('file', selectedImage)
+
         axios.post("/upload", data, {
+            responseType: 'application/json'
+        })
+        .then (res => {
+            console.log("test!")
+            console.log(res.body)
+            image_ID = res
+            console.log(image_ID)
+
+            // This call needs the original call to finish first before uploading the section data.
+            var preExistingData = JSON.parse(sessionStorage.getItem('sectionInfo'));
+                axios.post("/upload_annotation_results", preExistingData, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+            .then (res => {
+                console.log(res.data)
+            })
+        })
+   
+        axios.post("/detect_image", data, {
             responseType: 'blob'
         })
         .then (res => {
             console.log(res.data)
             setResponse(URL.createObjectURL(new Blob([res.data])))
+
+            // Delete image stored in backend
         })
-
     }
-
 
     function saveSection(class_menu) {
         var class_id = parseInt((document.getElementById(class_menu)).value);
@@ -123,8 +147,10 @@ const Cropper = () => {
                 Upload File
                 </Button>
             }
-
-            {src && <img id='DetectResult' src={responseImage} key={src} alt="Not found"/> }
+            <br/>
+            <h1>Processed Image</h1>
+            {!responseImage && <p>No image processed yet. Try uploading something!</p>}
+            {src && <img id='DetectResult' onerror="this.style.display='none'" src={responseImage} key={src}/> }
         </div>
 
     )
