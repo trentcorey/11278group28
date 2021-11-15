@@ -26,8 +26,8 @@ app.use(function(req, res, next) {
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 const s3 = new aws.S3({
-    accessKeyId: 'AKIATOWZ4AJ3XPEQJF27',
-    secretAccessKey: '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' 
+    accessKeyId: '',
+    secretAccessKey: '' 
 });
 
 const connection = mysql.createConnection({
