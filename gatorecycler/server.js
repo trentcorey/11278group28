@@ -49,7 +49,7 @@ connection.connect(function(err) {
 const server = app.listen(port, function () {
     const port = server.address().port;
 
-    console.log('Server listening at http://localhost:%s', port);
+    console.log('Server listening at %s', port);
 
 });
 
