@@ -6,7 +6,6 @@ const aws = require('aws-sdk');
 const mysql = require('mysql');
 const spawn = require("child_process").spawn;
 const path = require('path')
-const S3Zipper = require ('aws-s3-zipper')
 const app = express();
 
 const port = process.env.PORT || 8081;
@@ -25,11 +24,13 @@ app.use(function(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+// REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
 const s3 = new aws.S3({
     accessKeyId: '',
     secretAccessKey: '' 
 });
 
+// Configuration for SQL connection to AWS RDS servers.
 const connection = mysql.createConnection({
     host        : 'cen3907database.c2ulacfq2lky.us-east-2.rds.amazonaws.com',
     user        : 'admin',
@@ -188,7 +189,6 @@ app.delete("/delete_annotation", function(req, res) {
     fs.unlinkSync("uploads/annotations.txt");
     console.log("Deleting annotations after download")
 })
-
 
 app.get('/image_zip_download', function (req, res) {
     console.log("Testing");

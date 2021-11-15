@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-s3-zipper": "^1.4.0",
     "aws-sdk": "^2.1028.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
