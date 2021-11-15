@@ -23,8 +23,8 @@ app.use(function(req, res, next) {
 });
 
 const s3 = new aws.S3({
-    accessKeyId: 'AKIATOWZ4AJ3YQGM25X2',
-    secretAccessKey: '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' 
+    accessKeyId: '',
+    secretAccessKey: '' 
 });
 
 const connection = mysql.createConnection({
