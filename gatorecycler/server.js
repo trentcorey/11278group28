@@ -173,6 +173,9 @@ app.get('/annotations', function(req, res) {
             var annotation = curr.x_min + "," + curr.x_max + "," + curr.x_max + "," + curr.x_min + "," + curr.class_id + " "
             var imgpath_and_annotations = imgpath_and_annotations + " " + annotation;
         }
+        // Append last file
+        fs.appendFileSync(stream, imgpath_and_annotations);
+        fs.appendFileSync(stream, '\n');
         
         var filepath = __dirname + "/uploads/annotations.txt";
 
