@@ -6,11 +6,11 @@ const aws = require('aws-sdk');
 const mysql = require('mysql');
 const spawn = require("child_process").spawn;
 const path = require('path')
+
 const app = express();
 
+
 const port = process.env.PORT || 8081;
-
-
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
-
+var insert_id;
 // REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
 const s3 = new aws.S3({
     accessKeyId: '',
@@ -91,12 +91,10 @@ app.post('/detect_image', upload.single('file'), async function(req, res) {
 });
 
 app.post('/upload', uploadS3.single('file'), function(req, res) {
-    const uploaded_to_filepath = req.file.location;
-    console.log("Image uploaded!");
-    console.log(req.file.path);
-
+    var key = req.file.key;
+    console.log(key)
     var data_to_post = {
-        Image_Filepath: uploaded_to_filepath
+        Image_Filepath: key
     }
 
     // Upload image filepath to database
@@ -190,9 +188,40 @@ app.delete("/delete_annotation", function(req, res) {
     console.log("Deleting annotations after download")
 })
 
+
+const getS3Object = key => {
+    return new Promise((resolve, reject) => {
+      s3.getObject({
+          Bucket: "cen3907imagedb", 
+          Key: key
+        }, (err, data) => {
+          if (err){
+            resolve(err)
+          } else {
+            resolve(fs.writeFile(__dirname + '/uploads/' + key, data.Body, function(err, result) {
+                if (err) throw err;
+            }))
+          }
+        })
+    })
+}
+
+
 app.get('/image_zip_download', function (req, res) {
-    console.log("Testing");
-    const {exec} = require('child_process')
-    exec('aws s3 cp s3://cen3907imagedb/images ./ --recursive')
-    res.send("Hello")
+    var sql = "SELECT * FROM Images"
+    var result_keys = [];
+    connection.query(sql, function(err, result) {
+        if (err) throw err;
+        console.log(result.length)
+        for (var i = 0; i < result.length; i++) {
+            result_keys.push(getS3Object(result[i].Image_Filepath));
+        }
+
+        let promises = result_keys
+        
+        return Promise.all(promises)
+        .then
+    })
 })
+
+
