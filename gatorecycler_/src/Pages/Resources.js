@@ -14,8 +14,9 @@ class Resources extends Component{
             <div>
                 <h1>Neural Network Weights</h1>
                 <p> 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    The weight of a neural network is the parameter that transforms input data within the network's hidden layers. 
+                    The neural network weights used in the Gatorecycler are avaliable for users to download to use for
+                    recreational purposes.
                 </p>
                 <Button variant="outlined" color ="primary">
                     Export Network
@@ -23,8 +24,7 @@ class Resources extends Component{
 
                 <h1>Open Source Image Database</h1>
                 <p> 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    The database is open source and users a free to use the images Gatorecycler has collected for their recreational purposes.
                 </p>
                 <Button variant="outlined" color = "primary">
                     Export Database
