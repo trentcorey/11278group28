@@ -30,8 +30,8 @@ app.use(express.static(path.join(__dirname, 'client', 'build')));
 var insert_id;
 // REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
 const s3 = new aws.S3({
-    accessKeyId: 'AKIATOWZ4AJ36A2KSKMU',
-    secretAccessKey: '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',
+    accessKeyId: '',
+    secretAccessKey: '',
     signatureVersion: 'v4',
     region: 'us-east-2'
 });
