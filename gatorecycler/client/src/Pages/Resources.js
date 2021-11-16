@@ -11,11 +11,26 @@ import axios from 'axios';
 import download from 'downloadjs'
 
 const ImageDatabaseDownload = () => {
-    axios.get("/annotations", {})
+    axios.get("/annotations", {responseType: 'arraybuffer'})
     .then (res => {
         console.log(res.data)
         download(res.data, 'annotations.txt')
         axios.delete("/delete_annotation")
+    })
+    
+    axios.get("/image_zip_download", {responseType: 'arraybuffer'})
+    .then (res => {
+        console.log("Archive downloaded");
+        download(res.data, 'image_set.zip');
+    })
+}
+
+const WeightsDownload = () => {
+    axios.get("/get_weights", {})
+    .then (res => {
+        console.log("Downloading weights")
+        console.log(res.data);
+        window.open(res.data);
     })
 }
 
@@ -29,7 +44,7 @@ class Resources extends Component{
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                 </p>
-                <Button variant="outlined" color ="primary">
+                <Button variant="outlined" color ="primary" onClick = {() => {WeightsDownload()}}>
                     Export Network
                 </Button>
 

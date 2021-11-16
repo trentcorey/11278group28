@@ -6,15 +6,18 @@ const aws = require('aws-sdk');
 const mysql = require('mysql');
 const spawn = require("child_process").spawn;
 const path = require('path')
+const archiver = require('archiver')
 
 const app = express();
 
-
 const port = process.env.PORT || 8081;
+
+
 
 app.use(express.json());
 app.use(express.urlencoded());
 app.use("/uploads", express.static("uploads"));
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -23,11 +26,14 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static(path.join(__dirname, 'client', 'build')));
+
 var insert_id;
 // REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
 const s3 = new aws.S3({
-    accessKeyId: '',
-    secretAccessKey: '' 
+    accessKeyId: 'AKIATOWZ4AJ36A2KSKMU',
+    secretAccessKey: '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',
+    signatureVersion: 'v4',
+    region: 'us-east-2'
 });
 
 // Configuration for SQL connection to AWS RDS servers.
@@ -175,6 +181,7 @@ app.get('/annotations', function(req, res) {
         // Append last file
         fs.appendFileSync(stream, imgpath_and_annotations);
         fs.appendFileSync(stream, '\n');
+        fs.close(stream);
         
         var filepath = __dirname + "/uploads/annotations.txt";
 
@@ -189,7 +196,7 @@ app.delete("/delete_annotation", function(req, res) {
 })
 
 
-const getS3Object = key => {
+const getS3Object = (key, archive) => {
     return new Promise((resolve, reject) => {
       s3.getObject({
           Bucket: "cen3907imagedb", 
@@ -198,9 +205,9 @@ const getS3Object = key => {
           if (err){
             resolve(err)
           } else {
-            resolve(fs.writeFile(__dirname + '/uploads/' + key, data.Body, function(err, result) {
-                if (err) throw err;
-            }))
+            resolve(
+                archive.append(data.Body, { name: key })
+            )
           }
         })
     })
@@ -210,18 +217,39 @@ const getS3Object = key => {
 app.get('/image_zip_download', function (req, res) {
     var sql = "SELECT * FROM Images"
     var result_keys = [];
+
+    const output = fs.createWriteStream(__dirname + '/uploads/image_set.zip');
+    const archive = archiver('zip', {
+        zlib: { level: 9 } // Sets the compression level.
+    });
+    output.on('close', function() {
+        console.log(archive.pointer() + ' total bytes');
+        var filepath = __dirname + "/uploads/image_set.zip";
+        res.download(filepath)
+    })
+    archive.pipe(output);
+
     connection.query(sql, function(err, result) {
         if (err) throw err;
         console.log(result.length)
         for (var i = 0; i < result.length; i++) {
-            result_keys.push(getS3Object(result[i].Image_Filepath));
+            result_keys.push(getS3Object(result[i].Image_Filepath, archive));
         }
 
         let promises = result_keys
-        
+
         return Promise.all(promises)
-        .then
+        .then(() => {
+            archive.finalize();
+        })
     })
 })
 
-
+app.get('/get_weights', function(req, res) {
+    const url = s3.getSignedUrl('getObject', {
+        Bucket: "cen3907imagedb", 
+        Key: 'yolov3_weights.h5',
+        Expires: 300
+    })
+    res.send(url)
+})
