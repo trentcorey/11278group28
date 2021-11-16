@@ -27,10 +27,10 @@ class About extends Component{
                                 <Typography
                                     variant = "p"
                                 >
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
-                                    ut aliquip ex ea commodo consequat.
+                                    Gatorecycler is a project dedicated to training a neural network to distinguish recyclable material,
+                                    for effective handling of waste. Tons of recyclable material is thrown away everyday and Gatorecycler
+                                    aims to reduce waste by sorting through it and locating recyclable material. This website serves as
+                                    a way for individuals to contribute images to the neural network and be part of the change!
                                 </Typography>
                             </Box>
                         </CardContent>
@@ -57,10 +57,11 @@ class About extends Component{
                                 <Typography
                                     variant = "p"
                                 >
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
-                                    ut aliquip ex ea commodo consequat.
+                                    Machine learning is the study of algorithms that imitate intelligent human
+                                    behavior and improve automatically through experience and collecting data.
+                                    It is a subsection of Artificial intelligence. Gatorecycler uses machine 
+                                    learning with image processing to sort through waste and detect recyclable
+                                    material.
                                 </Typography>
                             </Box>
                         </CardContent>

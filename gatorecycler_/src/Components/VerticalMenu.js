@@ -11,6 +11,7 @@ function TabPanel(props) {
     return (
       <div
         id={`nav-bar-${index}`}
+        style={{width: 'fit-content'}}
       >
         {value === index && (
           <Box sx={{ p: 3 }}>
@@ -36,7 +37,7 @@ function VerticalMenu() {
     };
   
     return (
-      <Box
+      <Box 
         sx={{ flexGrow: 1, bgcolor: 'white', display: 'flex', height: 250}}
       >
         <Tabs
@@ -44,11 +45,11 @@ function VerticalMenu() {
           value={value}
           onChange={handleChange}
           aria-label="Sub-navbar in home"
-          sx={{ borderRight: 1, borderColor: 'divider' }}
+          sx={{ borderRight: 1, borderColor: 'divider',  }}
         >
           <Tab label="About" {...menu(0)} to='/about' component={Link}  />
           <Tab label="Resources" {...menu(1)} to='/resources' component={Link} />
-          <Tab label="Help Section" {...menu(2)} to='/help' component={Link} />
+          <Tab label="Help Section"  {...menu(2)} to='/help' component={Link} />
         </Tabs>
         
         <TabPanel value={value} index={0}>
@@ -57,7 +58,7 @@ function VerticalMenu() {
         <TabPanel value={value} index={1}>
           <Resources/>
         </TabPanel>
-        <TabPanel value={value} index={2}>
+        <TabPanel  value={value} index={2}>
           <Help/>
         </TabPanel>
       </Box>
