@@ -20,7 +20,7 @@ var spawn = require("child_process").spawn;
 
 var path = require('path');
 
-var S3Zipper = require('aws-s3-zipper');
+var archiver = require('archiver');
 
 var app = express();
 var port = process.env.PORT || 8081;
@@ -34,10 +34,13 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(express["static"](path.join(__dirname, 'client', 'build')));
+var insert_id; // REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
+
 var s3 = new aws.S3({
-  accessKeyId: '',
-  secretAccessKey: ''
-});
+  accessKeyId: 'AKIATOWZ4AJ36A2KSKMU',
+  secretAccessKey: '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'
+}); // Configuration for SQL connection to AWS RDS servers.
+
 var connection = mysql.createConnection({
   host: 'cen3907database.c2ulacfq2lky.us-east-2.rds.amazonaws.com',
   user: 'admin',
@@ -54,7 +57,7 @@ connection.connect(function (err) {
 });
 var server = app.listen(port, function () {
   var port = server.address().port;
-  console.log('Server listening at http://localhost:%s', port);
+  console.log('Server listening at %s', port);
 }); // Uploading an image to the server
 
 var storage = multer.diskStorage({
@@ -111,11 +114,10 @@ app.post('/detect_image', upload.single('file'), /*#__PURE__*/function () {
   };
 }());
 app.post('/upload', uploadS3.single('file'), function (req, res) {
-  var uploaded_to_filepath = req.file.location;
-  console.log("Image uploaded!");
-  console.log(req.file.path);
+  var key = req.file.key;
+  console.log(key);
   var data_to_post = {
-    Image_Filepath: uploaded_to_filepath
+    Image_Filepath: key
   }; // Upload image filepath to database
 
   connection.query("INSERT INTO Images SET ?;", data_to_post, function (err, result) {
@@ -186,8 +188,11 @@ app.get('/annotations', function (req, res) {
 
       var annotation = curr.x_min + "," + curr.x_max + "," + curr.x_max + "," + curr.x_min + "," + curr.class_id + " ";
       var imgpath_and_annotations = imgpath_and_annotations + " " + annotation;
-    }
+    } // Append last file
 
+
+    fs.appendFileSync(stream, imgpath_and_annotations);
+    fs.appendFileSync(stream, '\n');
     var filepath = __dirname + "/uploads/annotations.txt";
     res.download(filepath);
   });
@@ -196,12 +201,54 @@ app["delete"]("/delete_annotation", function (req, res) {
   fs.unlinkSync("uploads/annotations.txt");
   console.log("Deleting annotations after download");
 });
+
+var getS3Object = function getS3Object(key, archive) {
+  return new Promise(function (resolve, reject) {
+    s3.getObject({
+      Bucket: "cen3907imagedb",
+      Key: key
+    }, function (err, data) {
+      if (err) {
+        resolve(err);
+      } else {
+        resolve(archive.append(data.Body, {
+          name: key
+        })); // resolve(fs.writeFile(__dirname + '/uploads/' + key, data.Body, function(err, result) {
+        //     if (err) throw err;
+        // }))
+      }
+    });
+  });
+};
+
 app.get('/image_zip_download', function (req, res) {
-  console.log("Testing");
+  var sql = "SELECT * FROM Images";
+  var result_keys = [];
+  var output = fs.createWriteStream(__dirname + '/uploads/image_set.zip');
+  var archive = archiver('zip', {
+    zlib: {
+      level: 9
+    } // Sets the compression level.
 
-  var _require = require('child_process'),
-      exec = _require.exec;
+  });
+  output.on('close', function () {
+    console.log(archive.pointer() + ' total bytes');
+  });
+  archive.pipe(output);
+  console.log(__dirname);
+  connection.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log(result.length);
 
-  exec('aws s3 cp s3://cen3907imagedb/images ./ --recursive');
-  res.send("Hello");
+    for (var i = 0; i < result.length; i++) {
+      result_keys.push(getS3Object(result[i].Image_Filepath, archive));
+    }
+
+    var promises = result_keys;
+    return Promise.all(promises).then(function () {
+      archive.finalize();
+      var filepath = __dirname + "/uploads/image_set.zip";
+      res.download(filepath);
+    });
+  });
 });
