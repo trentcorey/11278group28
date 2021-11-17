@@ -28,8 +28,8 @@ app.use(function(req, res, next) {
 var insert_id;
 // REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
 const s3 = new aws.S3({
-    accessKeyId: 'AKIATOWZ4AJ3WWRERSIB',
-    secretAccessKey: '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',
+    accessKeyId: '',
+    secretAccessKey: '',
     signatureVersion: 'v4',
     region: 'us-east-2'
 });
