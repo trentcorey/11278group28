@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  gatorecycler-client:
+    build:
+      context: ./client
+    image: "node:12.18.3"
+    container_name: client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gatorecycler-server
+    links:
+      - gatorecycler-server
+  
+  gatorecycler-server:
+    build:
+      context: ./server
+    image: "nikolaik/python-nodejs:python3.6-nodejs16"
+    container_name: server
+    ports:
+      - "8081:8081"
+
+    
