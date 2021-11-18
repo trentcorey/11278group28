@@ -9,7 +9,7 @@ class Help extends Component{
             <div>
                 <h1>Help Section</h1>
                 <p> 
-                    Here are some requently asked questions from users.
+                    Here are some recently asked questions from users.
                 </p>
                 <AccordionHelp/>
             </div>

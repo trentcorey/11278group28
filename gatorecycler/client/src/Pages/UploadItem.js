@@ -10,7 +10,7 @@ class UploadItems extends Component{
                     //variant = "outlined"
                     elevation = {2}
                 >
-                    <h2>File Upload</h2>
+                    <h2>Image Upload</h2>
 
                     <Cropper />
                 </Paper>

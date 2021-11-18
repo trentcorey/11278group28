@@ -5,14 +5,11 @@ const fs = require('fs');
 const aws = require('aws-sdk');
 const mysql = require('mysql');
 const spawn = require("child_process").spawn;
-const path = require('path')
 const archiver = require('archiver')
 
 const app = express();
 
 const port = process.env.PORT || 5000;
-
-
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -26,7 +23,7 @@ app.use(function(req, res, next) {
 });
 
 var insert_id;
-// REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB.
+// REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB. (security reasons)
 const s3 = new aws.S3({
     accessKeyId: '',
     secretAccessKey: '',
@@ -185,14 +182,12 @@ app.get('/annotations', function(req, res) {
 
         res.download(filepath) 
     })
-
 })
 
 app.delete("/delete_annotation", function(req, res) {
     fs.unlinkSync("uploads/annotations.txt");
     console.log("Deleting annotations after download")
 })
-
 
 const getS3Object = (key, archive) => {
     return new Promise((resolve, reject) => {
@@ -210,7 +205,6 @@ const getS3Object = (key, archive) => {
         })
     })
 }
-
 
 app.get('/image_zip_download', function (req, res) {
     var sql = "SELECT * FROM Images"

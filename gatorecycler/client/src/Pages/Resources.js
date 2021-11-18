@@ -41,20 +41,20 @@ class Resources extends Component{
             <div>
                 <h1>Neural Network Weights</h1>
                 <p> 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    The neural networks stored are for the YoloV3 neural network architecture. These weights result from
+                    training a neural network and can be directly imported to other similar neural networks for use in
+                    detection.
                 </p>
                 <Button variant="outlined" color ="primary" onClick = {() => {WeightsDownload()}}>
-                    Export Network
+                    Download Network
                 </Button>
 
                 <h1>Open Source Image Database</h1>
                 <p> 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                The database is open source. Users are free to use the images Gatorecycler has collected for their own projects.
                 </p>
                 <Button variant="outlined" color = "primary" onClick = {() => {ImageDatabaseDownload()}}>
-                    Export Database
+                    Download Database
                 </Button>
             </div>
         )
