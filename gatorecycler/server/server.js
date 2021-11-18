@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use("/uploads", express.static("uploads"));
 
+// Allows headers to allow for file transfer.
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
@@ -40,6 +41,7 @@ const connection = mysql.createConnection({
     database    : 'image_database'
 });
 
+// Connects to SQL using config.
 connection.connect(function(err) {
     if (err) {
         throw err
@@ -48,6 +50,7 @@ connection.connect(function(err) {
     }
 });
 
+// App listens on port 5000.
 const server = app.listen(port, function () {
     const port = server.address().port;
 
@@ -65,8 +68,10 @@ var storage = multer.diskStorage({
     }
 })
 
+// Multer config
 var upload = multer({storage: storage});
 
+// s3 multer config
 var uploadS3 = multer({
     storage: multerS3({
         s3: s3,
@@ -81,6 +86,7 @@ var uploadS3 = multer({
     })
 })
 
+// Uploads image to neural network for processing. Returns what it thinks it sees in the image.
 app.post('/detect_image', upload.single('file'), async function(req, res) {
     console.log("Image uploaded for detection...");
     // Calls python script to automatically detect objects in the image
@@ -91,6 +97,7 @@ app.post('/detect_image', upload.single('file'), async function(req, res) {
     });
 });
 
+// Uploads image to S3 & image key to SQL
 app.post('/upload', uploadS3.single('file'), function(req, res) {
     var key = req.file.key;
     console.log(key)
@@ -107,6 +114,8 @@ app.post('/upload', uploadS3.single('file'), function(req, res) {
     });
 });
 
+
+// Uploads the annotation file sent from user into SQL table.
 app.post('/upload_annotation_results', function(req, res) {
     
     var sql = "INSERT INTO Annotation_Table SET ?;"
@@ -129,6 +138,7 @@ app.post('/upload_annotation_results', function(req, res) {
     }
 })
 
+// Delete image result from neural network after it's returned.
 app.delete('/delete_result', function(req, res) {
     console.log("Deleting result")
     const python = spawn('python', ['python_helpers/delete_result.py']);
@@ -184,11 +194,13 @@ app.get('/annotations', function(req, res) {
     })
 })
 
+// Deletes annotation after file is downloaded to user.
 app.delete("/delete_annotation", function(req, res) {
     fs.unlinkSync("uploads/annotations.txt");
     console.log("Deleting annotations after download")
 })
 
+// Function gets S3 data blob.
 const getS3Object = (key, archive) => {
     return new Promise((resolve, reject) => {
       s3.getObject({
@@ -206,6 +218,7 @@ const getS3Object = (key, archive) => {
     })
 }
 
+// downloads image database in zip file
 app.get('/image_zip_download', function (req, res) {
     var sql = "SELECT * FROM Images"
     var result_keys = [];
@@ -237,6 +250,7 @@ app.get('/image_zip_download', function (req, res) {
     })
 })
 
+// download weights file from S3
 app.get('/get_weights', function(req, res) {
     const url = s3.getSignedUrl('getObject', {
         Bucket: "cen3907imagedb", 
@@ -246,7 +260,10 @@ app.get('/get_weights', function(req, res) {
     res.send(url)
 })
 
-// Test apis
+
+
+
+// Test api calls
 
 app.get('/test_py', function(req, res) {
     console.log("Image uploaded for detection...");
