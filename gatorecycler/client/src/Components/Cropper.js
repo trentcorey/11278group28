@@ -1,5 +1,5 @@
 import ReactCrop from 'react-image-crop';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import 'react-image-crop/dist/ReactCrop.css';
 import { Button } from '@mui/material';
 import DisplayTable from './DisplayTable';
@@ -144,7 +144,7 @@ const Cropper = () => {
                     color = "primary"
                     size = "small"
                     onClick={() => {handleFileUpload()}}>
-                Upload File
+                Upload Image
                 </Button>
             }
             <br/>
