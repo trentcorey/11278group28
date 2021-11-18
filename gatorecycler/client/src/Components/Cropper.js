@@ -103,6 +103,7 @@ const Cropper = () => {
     return (
         <div className='container'>
             <div className='row'>
+                <div> Please note that we are not responsible for private information that are accidentally uploaded.</div>
                 <div className='col-6'>
                     <input type='file' accept='image/jpeg' onChange={handleFileChange} />
                 </div>

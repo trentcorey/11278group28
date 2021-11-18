@@ -60,6 +60,10 @@ class AccordionHelp extends Component {
                 
                             After the user has finished sectioning and labeling the photo, the user can hit
                             "Upload Image" to submit the image and the annotations to a database.
+
+                            Please note that we are not responsible for what photos you send. If you upload
+                            a photo, it may be seen by someone else, so take care not to submit personal 
+                            information.
                         </typography>
                     </AccordionDetails>
                 </Accordion>
