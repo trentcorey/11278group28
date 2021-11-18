@@ -19,6 +19,6 @@ services:
     image: "nikolaik/python-nodejs:python3.6-nodejs16"
     container_name: server
     ports:
-      - "8081:8081"
+      - "5000:5000"
 
     

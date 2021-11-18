@@ -4,4 +4,5 @@ WORKDIR /usr/src/client
 COPY . .
 run npm install --production
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]
+
