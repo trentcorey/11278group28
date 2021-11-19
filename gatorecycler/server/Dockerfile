@@ -15,5 +15,6 @@ RUN pip3 install opencv-contrib-python
 WORKDIR /usr/src/server
 COPY . .
 run npm install --production
-EXPOSE 8081
+
+EXPOSE 5000
 CMD ["node", "server.js"]

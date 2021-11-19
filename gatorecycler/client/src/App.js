@@ -5,7 +5,6 @@ import Titlebar from './Components/Titlebar';
 import Home from './Pages/Home';
 import UploadItems from './Pages/UploadItem';
 import {HashRouter as Router, Route} from 'react-router-dom';
-import SignIn from './Pages/SignIn';
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
         <CssBaseline />
         <Titlebar/>
         <Navbar />
-        <Route exact path = '/sign-in'><SignIn/></Route>
         <Route exact path= '/'><Home/></Route>
         <Route exact path='/upload-image'><UploadItems/></Route>
         <Route exact path= '/about'></Route>

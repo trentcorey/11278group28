@@ -5,7 +5,8 @@ const fs = require('fs');
 const aws = require('aws-sdk');
 const mysql = require('mysql');
 const spawn = require("child_process").spawn;
-const archiver = require('archiver')
+const archiver = require('archiver');
+const { AppIntegrations } = require('aws-sdk');
 
 const app = express();
 
@@ -296,3 +297,13 @@ app.get('/test2_py', function(req, res) {
         res.send("Process ended")
     });
 })
+
+// Intentional crash
+app.get('/crash-async', function (req, res) {
+    console.log('async crashing')
+    setTimeout(function () {
+      throw new Error('Async error')
+    }, 100)
+    // this code runs fine
+    res.send('after async crash\n')
+  })
