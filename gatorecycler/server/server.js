@@ -24,7 +24,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-var insert_id;
+var insert_id = 0;
 // REQUEST KEYS FROM OWNER. WILL NOT BE POSTED ON GITHUB. (security reasons)
 const s3 = new aws.S3({
     accessKeyId: '',
@@ -59,7 +59,7 @@ const server = app.listen(port, function () {
 
 });
 
-// Uploading an image to the server
+// Uploading an image to the server, stores it locally.
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads')
@@ -72,7 +72,7 @@ var storage = multer.diskStorage({
 // Multer config
 var upload = multer({storage: storage});
 
-// s3 multer config
+// s3 multer config for connection to the S3 file storage.
 var uploadS3 = multer({
     storage: multerS3({
         s3: s3,
@@ -82,17 +82,21 @@ var uploadS3 = multer({
             cb(null, {fieldName: file.fieldname});
         },
         key: function (req, file, cb) {
+            // Image identified in the database.
             cb(null, Date.now().toString() + '.jpg')
         }
     })
 })
 
 // Uploads image to neural network for processing. Returns what it thinks it sees in the image.
+// Credit to: https://pylessons.com/YOLOv3-custom-data/ for the CNN, aside from small modifications.
+// Credit also to: https://pjreddie.com/darknet/yolo/
 app.post('/detect_image', upload.single('file'), async function(req, res) {
     console.log("Image uploaded for detection...");
     // Calls python script to automatically detect objects in the image
     const python = spawn('python', ['CNN/image_detect.py', req.file.path]);
     python.on('close', (code) => {
+        // On the CNN finishing detection, returns the image to the frontend to be displayed.
         console.log('Finished detection')
         res.sendFile(__dirname + "/uploads/result.jpg")
     });
@@ -150,6 +154,7 @@ app.delete('/delete_result', function(req, res) {
     });
 });
 
+// API call that downloads the annotations.
 app.get('/annotations', function(req, res) {
     // SQL query
     var sql = "SELECT * FROM Annotation_Table INNER JOIN Images ON Annotation_Table.ImageID = Images.ID"
@@ -159,10 +164,12 @@ app.get('/annotations', function(req, res) {
     // This solution might be a little unworkable at scale but... this is a prototype, right?
     // I'll learn promises later.
 
+    // Loops through query results, appending all the form data in accordance to a specific format (image_path x_min,y_min,x_max,y_max,class_id etc...)
     connection.query(sql, function(err, result) {
         if (err) throw err;
 
         if (result.length < 0) throw err;
+        // First image line
         var curr = result[0];
         var curr_ID = curr.ImageID;
         var imgpath = curr.Image_Filepath;
@@ -172,16 +179,19 @@ app.get('/annotations', function(req, res) {
         for (var i = 1; i < result.length; i++) {
             console.log(curr_ID)
             curr = result[i]
+            // If the current ID does not match the new ID, add entire line to text file and add new line. Then switch from old key to new key.
             if (curr_ID !== curr.ImageID) {
                 imgpath = curr.Image_Filepath;
                 curr_ID = curr.ImageID;
                 console.log(imgpath_and_annotations);
                 fs.appendFileSync(stream, imgpath_and_annotations);
                 fs.appendFileSync(stream, '\n');
+                // Restart new line with new image
                 imgpath_and_annotations = imgpath;
             }
-
+            // Separate annotation in accordance to specifications.
             var annotation = curr.x_min + "," + curr.x_max + "," + curr.x_max + "," + curr.x_min + "," + curr.class_id + " "
+            // Append annotation
             var imgpath_and_annotations = imgpath_and_annotations + " " + annotation;
         }
         // Append last file
@@ -205,13 +215,16 @@ app.delete("/delete_annotation", function(req, res) {
 const getS3Object = (key, archive) => {
     return new Promise((resolve, reject) => {
       s3.getObject({
+          // Get data from this database.
           Bucket: "cen3907imagedb", 
+          // Key is the image name.
           Key: key
         }, (err, data) => {
           if (err){
             resolve(err)
           } else {
             resolve(
+                // Appends the image data with the name of the key from S3.
                 archive.append(data.Body, { name: key })
             )
           }
@@ -224,26 +237,31 @@ app.get('/image_zip_download', function (req, res) {
     var sql = "SELECT * FROM Images"
     var result_keys = [];
 
+    // Create zip file the images will be sent to.
     const output = fs.createWriteStream(__dirname + '/uploads/image_set.zip');
     const archive = archiver('zip', {
         zlib: { level: 9 } // Sets the compression level.
     });
     output.on('close', function() {
+        // On archive download finish, send zip file to user.
         console.log(archive.pointer() + ' total bytes');
         var filepath = __dirname + "/uploads/image_set.zip";
         res.download(filepath)
     })
+    // Archive is piped to the output file stream.
     archive.pipe(output);
 
     connection.query(sql, function(err, result) {
         if (err) throw err;
         console.log(result.length)
         for (var i = 0; i < result.length; i++) {
+            // Push function calls into this array.
             result_keys.push(getS3Object(result[i].Image_Filepath, archive));
         }
 
         let promises = result_keys
-
+        
+        // Promises wait for all data to be "got" and then finalizes the archive to be sent.
         return Promise.all(promises)
         .then(() => {
             archive.finalize();
