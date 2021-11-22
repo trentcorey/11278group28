@@ -18,9 +18,14 @@ const Cropper = () => {
     
     // This is called to handle a file load when it occurs.
     const handleFileChange = e => {
-        selectFile(URL.createObjectURL(e.target.files[0]))
-        setSelectedImage(e.target.files[0]);
-
+        // If no new file, don't change current image or delete annotations.
+        if (e.target.files.length > 0) {
+            selectFile(URL.createObjectURL(e.target.files[0]))
+            setSelectedImage(e.target.files[0]);
+        } else {
+            return;
+        }
+        
         // Clears section information.
         var clearData = [];
         sessionStorage.setItem('sectionInfo', JSON.stringify(clearData));

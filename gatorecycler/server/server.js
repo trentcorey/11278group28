@@ -13,7 +13,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(express.urlencoded());
+//app.use(express.urlencoded());
 app.use("/uploads", express.static("uploads"));
 
 // Allows headers to allow for file transfer.
